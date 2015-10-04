@@ -1,19 +1,18 @@
 {
-  "name": "@christiaanderidder/react-googlecharts",
-  "version": "1.0.4",
+  "name": "react-googlecharts",
+  "version": "1.1.0",
   "description": "React component for rendering Google Charts",
   "main": "./lib/components/GoogleChart.js",
   "scripts": {
-    "prepublish": "./node_modules/.bin/babel -d lib/ src/",
-    "test": "./node_modules/.bin/babel-node ./tests/tests.js"
+    "prepublish": "./node_modules/.bin/gulp prepublish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/christiaanderidder/react-googlecharts.git"
   },
   "keywords": [
-    "ChannelEngine",
-    "API"
+    "React",
+    "Google Charts"
   ],
   "author": "Christiaan de Ridder <ik@christiaanderidder.nl>",
   "license": "MIT",
@@ -22,6 +21,7 @@
     "babelify": "^6.3.0",
     "browserify": "^11.0.1",
     "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
     "gulp-buffer": "0.0.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stream": "0.0.2",
