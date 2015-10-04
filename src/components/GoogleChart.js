@@ -11,9 +11,6 @@ export default React.createClass({
 		return (this.props.data && this.props.data.length);
 	},
 	drawChart() {
-		console.log('rendering chart');
-		console.log(this.props);
-
 		if(!this.hasData() || !this.google) return;
 
 		var chart = null;

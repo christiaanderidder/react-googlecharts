@@ -23,9 +23,6 @@ class GoogleChartsLoader {
 	}
 
 	_injectScript(callback) {
-
-		console.log('injecting script');
-
 		var head = document.getElementsByTagName('head')[0];
 		var script = document.createElement('script');
 
@@ -48,9 +45,6 @@ class GoogleChartsLoader {
 	}
 
 	_loadLibraries(callback) {
-
-		console.log('loading libs');
-
 		window.google.load('visualization', '1.1', {
 			packages: ['corechart', 'bar'],
 			callback: callback
