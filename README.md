@@ -2,8 +2,12 @@
 
 This library injects the google JSAPI script and allows a Google Chart to be created using a React component.
 
+```
+npm install --save react-googlecharts
+```
+
 ```JSX
-mport React from 'react';
+import React from 'react';
 import GoogleChart from '../src/components/GoogleChart';
 
 var data = [
