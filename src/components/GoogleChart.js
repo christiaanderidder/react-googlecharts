@@ -18,9 +18,16 @@ export default React.createClass({
 		var charts = this.google.visualization;
 
 		switch(this.props.type) {
-			// Bar package
+			// Material charts
 			case 'material-bar':
+			case 'material-column':
 				chart = new google.charts.Bar(node);
+				break;
+			case 'material-line':
+				chart = new google.charts.Line(node);
+				break;
+			case 'material-scatter':
+				chart = new google.charts.Scatter(node);
 				break;
 
 			// Core charts package

@@ -46,7 +46,7 @@ class GoogleChartsLoader {
 
 	_loadLibraries(callback) {
 		window.google.load('visualization', '1.1', {
-			packages: ['corechart', 'bar'],
+			packages: ['corechart', 'bar', 'line', 'scatter'],
 			callback: callback
 		});
 	}
