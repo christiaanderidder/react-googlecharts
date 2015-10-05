@@ -13,6 +13,7 @@ export default React.createClass({
 				['Philadelphia, PA', 1526000, 1517000]
 			],
 			options: {
+				curveType: 'function'
 			}
 		};
 	},
@@ -27,6 +28,8 @@ export default React.createClass({
 	render() {
 		return(
 			<div className="wrapper">
+				<GoogleChart type="line" data={this.state.data} options={this.state.options} />
+				<GoogleChart type="bar" data={this.state.data} options={this.state.options} />
 				<GoogleChart type="material-line" data={this.state.data} options={this.state.options} />
 				<GoogleChart type="material-bar" data={this.state.data} options={this.state.options} />
 			</div>

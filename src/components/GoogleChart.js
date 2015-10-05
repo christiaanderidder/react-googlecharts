@@ -3,6 +3,11 @@ import React from 'react';
 import Loader from '../lib/GoogleChartsLoader';
 
 export default React.createClass({
+	getInitialState() {
+		return { 
+			chart: null
+		};
+	},
 	handleResize() {
 		if(this.resizeTimer) clearTimeout(this.resizeTimer);
 	    this.resizeTimer = setTimeout(this.drawChart, 100);
@@ -10,13 +15,14 @@ export default React.createClass({
 	hasData() {
 		return (this.props.data && this.props.data.length);
 	},
-	drawChart() {
+	createChart() {
+		console.log(window.innerWidth);
+
 		if(!this.hasData() || !this.google) return;
 
-		var chart = null;
 		var node = React.findDOMNode(this.refs.chart);
 		var charts = this.google.visualization;
-
+		var chart = null;
 		switch(this.props.type) {
 			// Material charts
 			case 'material-bar':
@@ -71,8 +77,33 @@ export default React.createClass({
 				chart = new charts.SteppedAreaChart(node);
 				break;
 		}
+		this.setState({
+			chart: chart
+		});
+	},
+	drawChart() {
+		if(!this.hasData() || !this.google || !this.state.chart) return;
 
-		chart.draw(charts.arrayToDataTable(this.props.data), this.props.options);
+		var data = this.google.visualization.arrayToDataTable(this.props.data)
+
+		var options = this.props.options;
+		switch(this.props.type) {
+			case 'material-line':
+				options = this.google.charts.Line.convertOptions(options);
+				break;
+			case 'material-bar':
+			case 'material-column':
+				options = this.google.charts.Bar.convertOptions(options);
+			case 'material-scatter':
+				options = this.google.charts.Scatter.convertOptions(options);
+		}
+
+		this.state.chart.draw(data, options);
+	},
+	clearChart() {
+		if(!this.hasData() || !this.google || !this.state.chart) return;
+
+		this.state.chart.clearChart();
 	},
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.data.length !== this.props.data.length;
@@ -83,6 +114,7 @@ export default React.createClass({
 	componentDidMount() {
 		Loader.load().then((google) => {
 			this.google = google;
+			this.createChart();
 			this.drawChart();
 		}, (err) => {
 			console.log(err);
@@ -91,6 +123,8 @@ export default React.createClass({
 	},
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleResize);
+
+		this.clearChart();
 	},
 	render() {
 		if(this.hasData()) {

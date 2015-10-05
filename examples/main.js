@@ -1,4 +1,15 @@
 import React from 'react';
 import Examples from './Examples';
 
-React.render(<Examples />, document.getElementById('main'));
+var node = document.getElementById('main');
+
+
+window.render = function(){
+	React.render(<Examples />, node);
+};
+
+window.unmount = function() {
+	React.unmountComponentAtNode(node);
+};
+
+window.render();
