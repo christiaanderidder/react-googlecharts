@@ -27,7 +27,8 @@ class GoogleChartsLoader {
 		var script = document.createElement('script');
 
 		script.setAttribute('type', 'text/javascript');
-		script.src = 'https://www.google.com/jsapi';
+		//script.src = 'https://www.google.com/jsapi';
+		script.src = 'https://www.gstatic.com/charts/loader.js';
 
 		if (script.addEventListener) {
 			 // Standard browsers (including IE9+)
@@ -45,10 +46,8 @@ class GoogleChartsLoader {
 	}
 
 	_loadLibraries(callback) {
-		window.google.load('visualization', '1.1', {
-			packages: ['corechart', 'bar', 'line', 'scatter'],
-			callback: callback
-		});
+		window.google.charts.load('41', {packages: ['corechart', 'bar', 'line', 'scatter']});
+		window.google.charts.setOnLoadCallback(callback);
 	}
 
 	_checkIfLoadedCorrectly() {

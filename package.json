@@ -1,6 +1,6 @@
 {
   "name": "react-googlecharts",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "React component for rendering Google Charts",
   "main": "./build/components/GoogleChart.js",
   "scripts": {

@@ -2,23 +2,28 @@ import React from 'react';
 
 import Loader from '../lib/GoogleChartsLoader';
 
-export default React.createClass({
-	getInitialState() {
-		return { 
+export default class GoogleChart extends React.Component {
+
+	constructor() {
+		super();
+		this.state = { 
 			chart: null
 		};
-	},
+	}
+
 	handleResize() {
 		if(this.resizeTimer) clearTimeout(this.resizeTimer);
-	    this.resizeTimer = setTimeout(this.drawChart, 100);
-	},
-	hasData() {
-		return (this.props.data && this.props.data.length);
-	},
-	createChart() {
-		console.log(window.innerWidth);
+	    this.resizeTimer = setTimeout(() => this.drawChart(), 100);
+	}
 
+	hasData() {
+		return (this.props.data && this.props.data.length > 0);
+	}
+
+	createChart() {
 		if(!this.hasData() || !this.google) return;
+
+		console.log('create:' + this.props.type);
 
 		var node = React.findDOMNode(this.refs.chart);
 		var charts = this.google.visualization;
@@ -77,12 +82,18 @@ export default React.createClass({
 				chart = new charts.SteppedAreaChart(node);
 				break;
 		}
-		this.setState({
-			chart: chart
-		});
-	},
+		
+		if(chart) {
+			this.setState({
+				chart: chart
+			});
+		}
+	}
+
 	drawChart() {
 		if(!this.hasData() || !this.google || !this.state.chart) return;
+
+		console.log('draw:' + this.props.type);
 
 		var data = this.google.visualization.arrayToDataTable(this.props.data)
 
@@ -99,38 +110,46 @@ export default React.createClass({
 		}
 
 		this.state.chart.draw(data, options);
-	},
+	}
+
 	clearChart() {
 		if(!this.hasData() || !this.google || !this.state.chart) return;
 
 		this.state.chart.clearChart();
-	},
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.data.length !== this.props.data.length;
-	},
+	}
+//	shouldComponentUpdate(nextProps, nextState) {
+//		return nextState.chart !== this.state.chart || nextProps.data.length !== this.props.data.length;
+//	}
+
 	componentDidUpdate() {
+		if(!this.state.chart && this.google && this.hasData()) this.createChart();
 		this.drawChart();
-	},
+	}
+
 	componentDidMount() {
-		Loader.load().then((google) => {
+		this.loader = Loader.load();
+		
+		this.loader.then((google) => {
 			this.google = google;
 			this.createChart();
 			this.drawChart();
 		}, (err) => {
 			console.log(err);
 		});
-		window.addEventListener('resize', this.handleResize);
-	},
+		window.addEventListener('resize', () => this.handleResize());
+	}
+
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.handleResize);
+		window.removeEventListener('resize', () => this.handleResize());
 
 		this.clearChart();
-	},
+	}
+
 	render() {
 		if(this.hasData()) {
-			return(<div ref="chart"></div>);
+			return(<div className="googlechart" ref="chart"></div>);
 		} else {
 			return(<div className="alert alert-danger">No Data</div>);
 		}
 	}
-});
+}
